@@ -27,33 +27,31 @@ never_delq = st.sidebar.radio("Never Delinquent?", ["Yes", "No"])
 
 # 4. DATA TRANSFORMATION & 5. PREDICTION
 if st.button("Generate Eligibility Prediction"):
-    
-    # EVERYTHING BELOW THIS LINE MUST BE INDENTED (Pushed to the right)
-    never_delq_val = 1 if never_delq == "Yes" else 0
-    
-    user_inputs = {
-        'ExternalRiskEstimate': ext_risk,
-        'NumSatisfactoryTrades': sat_trades,
-        'NetFractionRevolvingBurden': rev_burden,
-        'NeverDelinquent': never_delq_val
-    }
-    
-    # Build full DataFrame using the model's expected features
-    full_columns = model.feature_names_in_
-    input_df = pd.DataFrame(columns=full_columns)
-    input_df.loc[0] = 0 
-    
-    for col, val in user_inputs.items():
-        if col in input_df.columns:
-            input_df.at[0, col] = val
-            
-    # Calculate Risk Score - This line MUST be indented!
-    probability_bad = model.predict_proba(input_df)[0][1] 
+....# EVERYTHING BELOW MUST BE INDENTED BY 4 SPACES
+....never_delq_val = 1 if never_delq == "Yes" else 0
+....
+....user_inputs = {
+........'ExternalRiskEstimate': ext_risk,
+........'NumSatisfactoryTrades': sat_trades,
+........'NetFractionRevolvingBurden': rev_burden,
+........'NeverDelinquent': never_delq_val
+....}
+....
+....# Build the full DataFrame
+....full_columns = model.feature_names_in_
+....input_df = pd.DataFrame(columns=full_columns)
+....input_df.loc[0] = 0 
+....
+....for col, val in user_inputs.items():
+........if col in input_df.columns:
+............input_df.at[0, col] = val
+....        
+....# THIS IS LINE 51 - IT MUST STAY INDENTED!
+....probability_bad = model.predict_proba(input_df)[0][1] 
 
-    st.divider()
-    if probability_bad < 0.5:
-        st.success(f"### Result: APPROVED (Confidence: {1 - probability_bad:.2%})")
-        st.balloons()
-    else:
-        st.error(f"### Result: DECLINED (Risk Score: {probability_bad:.2%})")
-        st.warning("Manual Review Recommended: Applicant profile matches 'Bad' risk history.")
+....st.divider()
+....if probability_bad < 0.5:
+........st.success(f"### Result: APPROVED (Confidence: {1 - probability_bad:.2%})")
+........st.balloons()
+....else:
+........st.error(f"### Result: DECLINED (Risk Score: {probability_bad:.2%})")
