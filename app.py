@@ -46,12 +46,13 @@ if st.button("Generate Eligibility Prediction"):
         if col in input_df.columns:
             input_df.at[0, col] = val
             
-    # Calculate Risk Score
+   # 5. PREDICTION & RESULTS
     probability_bad = model.predict_proba(input_df)[0][1] 
-    
+
     st.divider()
-       if probability_bad < 0.5:
-            st.success(f"### Result: APPROVED (Confidence: {1 - probability_bad:.2%})")
-            st.balloons()
-       else:
-            st.error(f"### Result: DECLINED (Risk Score: {probability_bad:.2%})")
+    if probability_bad < 0.5:
+        st.success(f"### Result: APPROVED (Confidence: {1 - probability_bad:.2%})")
+        st.balloons()
+    else:
+        st.error(f"### Result: DECLINED (Risk Score: {probability_bad:.2%})")
+        st.warning("Manual Review Recommended: Applicant profile matches 'Bad' risk history.")
